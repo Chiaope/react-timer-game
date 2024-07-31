@@ -1,17 +1,20 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ResultModal from "./ResultModal";
 
 export default function TimerChallenge({title, targetTime}) {
+    const modalRef = useRef()
+
     const [challengeActive, setChallengeActive] = useState(false)
     function handleChallengeStart(){
         setChallengeActive(true)
     }
     function handleChallengeStop() {
+        modalRef.current.open()
         setChallengeActive(false)
     }
     return (
         <>
-        <ResultModal />
+        <ResultModal ref={modalRef}/>
         <section className="challenge">
             <h2>{title}</h2>
             <p className="challenge-time">
