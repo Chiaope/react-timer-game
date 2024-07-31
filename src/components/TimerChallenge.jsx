@@ -1,20 +1,37 @@
 import { useState, useRef } from "react";
 import ResultModal from "./ResultModal";
 
+const defaultInterval = 10
+
 export default function TimerChallenge({title, targetTime}) {
     const modalRef = useRef()
-
+    const intervalRef = useRef()
     const [challengeActive, setChallengeActive] = useState(false)
+    const [timeRemaining, setTimeRemaining]  = useState(targetTime * 1000)
+
+   
     function handleChallengeStart(){
+        intervalRef.current = setInterval(() => {
+            setTimeRemaining(prevTimeRemaining => {
+                const newTimeRemaining = prevTimeRemaining - defaultInterval
+                if (newTimeRemaining <= 0) {
+                    handleChallengeStop()
+                }
+                return newTimeRemaining
+            })
+        }, defaultInterval)
         setChallengeActive(true)
     }
     function handleChallengeStop() {
-        modalRef.current.open()
+        clearInterval(intervalRef.current)
         setChallengeActive(false)
+        modalRef.current.open()
     }
+
+
     return (
         <>
-        <ResultModal ref={modalRef}/>
+        <ResultModal ref={modalRef} timeRemaining={timeRemaining}/>
         <section className="challenge">
             <h2>{title}</h2>
             <p className="challenge-time">
