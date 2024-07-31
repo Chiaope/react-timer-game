@@ -1,7 +1,7 @@
 import { forwardRef, useImperativeHandle, useRef } from "react"
 
 const ResultModal = forwardRef(
-    function ResultModal({ result, targetTime, timeRemaining }, ref) {
+    function ResultModal({ result, targetTime, timeRemaining, onClose }, ref) {
         const dialogRef = useRef()
         useImperativeHandle(ref, () => {
             return {
@@ -10,7 +10,7 @@ const ResultModal = forwardRef(
         }
         )
         return (
-            <dialog ref={dialogRef} className="result-modal">
+            <dialog ref={dialogRef} className="result-modal" onClose={onClose}>
                 <h2>You {result}</h2>
                 <p>
                     The target time was <strong>{targetTime} second{(targetTime > 1) ? 's' : ''}</strong>
